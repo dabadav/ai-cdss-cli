@@ -1,6 +1,20 @@
 
 ## AI-CDSS CLI tool
 
+### Installation
+
+Install directly from GitHub:
+
+- Lastest release:
+
+```bash
+pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.1.0"
+```
+
+### Usage - CLI Entrypoint
+
+After installation, run the CLI tool with:
+
 ```bash
 $ ai-cdss-cli --help
                                                                                                                                                                       
@@ -18,9 +32,7 @@ $ ai-cdss-cli --help
 ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-## Usage
-
-### **recommend** command
+#### **recommend** command
 
 ```bash
 $ ai-cdss-cli recommend --help
@@ -65,7 +77,7 @@ When a new patient is recruited for a study, clinicians will have to input the p
   <img width="1317" height="1191" alt="image" src="https://github.com/user-attachments/assets/13e1f60c-8cc1-461e-95d8-083c4b210d8b" style="width:40%; height:auto;"/>
 </p>
 
-### **compute-protocol-metrics**
+#### **compute-protocol-metrics**
 
 ```bash
 $ ai-cdss-cli compute-protocol-metrics --help
@@ -85,5 +97,5 @@ $ ai-cdss-cli compute-protocol-metrics --help
 When a new protocol is included in the RGS platform, for the CDSS system to work, the attributes that this protocol target will need to be inputted. In order for the system to compute similarity with other RGS protocols.
 
 <p align="center">
-<img width="829" height="1172" alt="image" src="https://github.com/user-attachments/assets/deb4fabb-2968-4e1b-9fdb-a37b9f329592" style="width:40%; height:auto;"/>
+  <img width="829" height="1172" alt="image" src="https://github.com/user-attachments/assets/deb4fabb-2968-4e1b-9fdb-a37b9f329592" style="width:40%; height:auto;"/>
 </p>
