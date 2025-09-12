@@ -97,5 +97,5 @@ $ ai-cdss-cli compute-protocol-metrics --help
 When a new protocol is included in the RGS platform, for the CDSS system to work, the attributes that this protocol target will need to be inputted. In order for the system to compute similarity with other RGS protocols.
 
 <p align="center">
-  <img width="829" height="1172" alt="image" src="https://github.com/user-attachments/assets/deb4fabb-2968-4e1b-9fdb-a37b9f329592" style="width:40%; height:auto;"/>
+  <img width="829" height="1172" alt="image" src="https://github.com/user-attachments/assets/deb4fabb-2968-4e1b-9fdb-a37b9f329592" style="width:20%; height:auto;"/>
 </p>
