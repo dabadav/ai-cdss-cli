@@ -3,6 +3,7 @@ import os
 import logging
 from pathlib import Path
 from typing import List, Optional
+from dotenv import load_dotenv
 import typer
 from ai_cdss import DataLoader, DataProcessor
 from ai_cdss.interface import CDSSInterface
@@ -32,6 +33,7 @@ def get_settings(env_file: Optional[Path] = None) -> Settings:
     Build Settings once, optionally pointing at a custom .env file.
     If env_file is None, falls back to the default '.env'.
     """
+    load_dotenv(dotenv_path=env_file)  # Load environment variables from the specified .env file
     if env_file:
         return Settings(_env_file=str(env_file))
     return Settings()
