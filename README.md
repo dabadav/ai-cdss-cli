@@ -1,5 +1,5 @@
 
-
+## AI-CDSS CLI tool
 
 ```bash
 $ ai-cdss-cli --help
@@ -18,8 +18,9 @@ $ ai-cdss-cli --help
 ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
+## Usage
 
-#### **recommend**
+### **recommend** command
 
 ```bash
 $ ai-cdss-cli recommend --help
@@ -38,7 +39,9 @@ $ ai-cdss-cli recommend --help
 ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-#### **compute-metrics**
+#### **compute-metrics** command
+
+Precompute PPF when a patient signs up to clinical study.
 
 ```bash
 $ ai-cdss-cli compute-metrics --help
@@ -54,7 +57,15 @@ $ ai-cdss-cli compute-metrics --help
 ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-#### **compute-protocol-metrics**
+**Scenario**
+
+When a new patient is recruited for a study, clinicians will have to input the patient details through the MIMS - Medical Information Management System. Including information about baseline clinical assessments, study start date, and whether this patient needs recommendations. Once the patient is registered, the precomputation of PPF needs to be triggered, in order to update the internal files powering the AI-CDSS engine.
+
+<p align="center">
+  <img width="1317" height="1191" alt="image" src="https://github.com/user-attachments/assets/13e1f60c-8cc1-461e-95d8-083c4b210d8b" style="width:40%; height:auto;"/>
+</p>
+
+### **compute-protocol-metrics**
 
 ```bash
 $ ai-cdss-cli compute-protocol-metrics --help
@@ -68,3 +79,15 @@ $ ai-cdss-cli compute-protocol-metrics --help
 │ --help                    Show this message and exit.                                                                                                              │
 ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
+
+**Scenario**
+
+<p align="center">
+  <img width="829" height="1172" alt="image" src="https://github.com/user-attachments/assets/6087e74e-4908-4fb3-ad53-23ed039ffb32" />
+</p>
+
+When a new protocol is included in the RGS platform, for the CDSS system to work, the attributes that this protocol target will need to be inputted. In order for the system to compute similarity with other RGS protocols.
+
+<p align="center">
+<img width="829" height="1172" alt="image" src="https://github.com/user-attachments/assets/deb4fabb-2968-4e1b-9fdb-a37b9f329592" style="width:40%; height:auto;"/>
+</p>
