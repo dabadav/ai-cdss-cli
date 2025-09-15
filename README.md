@@ -11,7 +11,13 @@ Install directly from GitHub:
 pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.1.1"
 ```
 
-### Usage - CLI Entrypoint
+- Use a python version of >= 3.12 to install the package
+
+```bash
+python -m pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.1.1"
+```
+
+### CLI Entrypoint
 
 After installation, run the CLI tool with:
 
@@ -32,7 +38,43 @@ $ ai-cdss-cli --help
 ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-#### **recommend** command
+### .env file
+
+A .env filepath must be used as argument to the cli tool to define the DB credentials. It expects this fields.
+```
+DB_USER=
+DB_PASS=
+DB_HOST=
+DB_NAME=
+```
+
+
+## How to use?
+
+The system is expected to be used in three scenarios: i) when recommending weekly schedule for patients, ii) when new patient registered in a study, and iii) when new protocol is added to RGS.
+
+#### **i) Weekly Recommendations - **recommend** command**
+
+Example for running recommendations in production environment for patients that are in study 2:
+
+```
+$ ai-cdss-cli recommend --study_id 2 --env-file .ai_cdss/env/.env.prod
+```
+
+This command will select the patients in the given study who 
+- are marked for recommendation,
+    - `RECOMMEND = 1`
+- are still active in the study, 
+    - `start_date <= today <= end_date`
+- and have hit a weekly milestone (7, 14, 21 days, etc.) since their start date (past week prescrptions have expired and they need new ones).
+    - `DATEDIFF(CURDATE(), START_DATE) % 7 = 0`
+
+> [!IMPORTANT]
+> Run this command daily (for example, via a cron job) so that weekly recommendations are processed each day for all eligible patients.
+
+<details>
+
+<summary>more details (--help)</summary>
 
 ```bash
 $ ai-cdss-cli recommend --help
@@ -50,10 +92,24 @@ $ ai-cdss-cli recommend --help
 │    --help                                Show this message and exit.                                                                                               │
 ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
+</details>
 
-#### **compute-metrics** command
+#### **ii) Patient Registration - compute-metrics** command
 
-Precompute PPF when a patient signs up to clinical study.
+When a new patient is recruited for a study, clinicians will have to input the patient details through the MIMS - Medical Information Management System. Including information about baseline clinical assessments, study start date, and whether this patient needs recommendations. Once the patient is registered, the precomputation of PPF needs to be triggered, in order to update the internal files powering the AI-CDSS engine.
+
+Example to precompute PPF metric when a patient signs up to clinical study.
+
+```bash
+$ ai-cdss-cli compute-metrics --patient-id 103 --env-file .ai_cdss/env/.env.prod
+```
+
+> [!IMPORTANT]
+> After all **baseline clinical scores** for a newly registered patient are entered, this command should run **automatically** to pre-compute the PPF metric. **This metrics are required** for generating future recommendations.
+
+<details>
+
+<summary>more details (--help)</summary>
 
 ```bash
 $ ai-cdss-cli compute-metrics --help
@@ -68,16 +124,28 @@ $ ai-cdss-cli compute-metrics --help
 │    --help                         Show this message and exit.                                                                                                      │
 ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
-
-**Scenario**
-
-When a new patient is recruited for a study, clinicians will have to input the patient details through the MIMS - Medical Information Management System. Including information about baseline clinical assessments, study start date, and whether this patient needs recommendations. Once the patient is registered, the precomputation of PPF needs to be triggered, in order to update the internal files powering the AI-CDSS engine.
+</details>
 
 <p align="center">
   <img width="1317" height="1191" alt="image" src="https://github.com/user-attachments/assets/13e1f60c-8cc1-461e-95d8-083c4b210d8b" style="width:40%; height:auto;"/>
 </p>
 
-#### **compute-protocol-metrics**
+#### **iii) New protocol - compute-protocol-metrics command**
+
+When a new protocol is included in the RGS platform, for the CDSS system to work, the attributes that this protocol target will need to be inputted. In order for the system to compute similarity with other RGS protocols.
+
+Example to update the protocol_similarity file upon new protocol added. 
+
+```bash
+$ ai-cdss-cli compute-protocol-metrics --env-file .ai_cdss/env/.env.prod
+```
+
+> [!NOTE]
+> This assumes that the new protocol and its attributes have been added to the internal ai_cdss/data/protocol_attributes.csv file. Which at the moment **requires manually modifying the file**.
+
+<details>
+
+<summary>more details (--help)</summary>
 
 ```bash
 $ ai-cdss-cli compute-protocol-metrics --help
@@ -91,10 +159,7 @@ $ ai-cdss-cli compute-protocol-metrics --help
 │ --help                    Show this message and exit.                                                                                                              │
 ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
-
-**Scenario**
-
-When a new protocol is included in the RGS platform, for the CDSS system to work, the attributes that this protocol target will need to be inputted. In order for the system to compute similarity with other RGS protocols.
+</details>
 
 <p align="center">
   <img width="829" height="1172" alt="image" src="https://github.com/user-attachments/assets/deb4fabb-2968-4e1b-9fdb-a37b9f329592" style="width:20%; height:auto;"/>
