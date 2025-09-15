@@ -40,7 +40,7 @@ $ ai-cdss-cli --help
 
 ### .env file
 
-A .env filepath must be used as argument to the cli tool to define the DB credentials. It expects this fields.
+A .env filepath must be used as argument to the cli tool to define the DB credentials. It expects these fields:
 ```
 DB_USER=
 DB_PASS=
