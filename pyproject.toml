@@ -1,6 +1,6 @@
 [project]
 name = "ai-cdss-cli"
-version = "0.1.1"
+version = "0.1.2"
 description = "CLI Tool to run AI-CDSS"
 authors = [
     {name = "Eodyne Systems S.L."}
@@ -9,8 +9,8 @@ license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.12,<4.0"
 dependencies = [
-    "rgs_interface @ git+https://github.com/dabadav/rgs-interface.git@v0.4.1",
-    "ai_cdss @ git+https://github.com/dabadav/ai-cdss.git@v0.2.1",
+    "rgs_interface @ git+https://github.com/dabadav/rgs-interface.git@0.4.1",
+    "ai_cdss @ git+https://github.com/dabadav/ai-cdss.git@0.2.2",
     "typer (>=0.16.0,<0.17.0)",
 ]
 
