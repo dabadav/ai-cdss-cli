@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import List, Optional
 from dotenv import load_dotenv
 import typer
+import json
 from ai_cdss import DataLoader, DataProcessor
 from ai_cdss.interface import CDSSInterface
 
@@ -46,40 +47,79 @@ def build_cdss(settings: Settings) -> CDSSInterface:
 
 @cli.command()
 def recommend(
-    study_id: List[int] = typer.Option(
-        ..., "--study-id", "-s",
-        help="Repeat this option to provide multiple integers."
+    study_id: Optional[List[int]] = typer.Option(
+        None, "--study-id", "-s",
+        help="Study cohort ID(s). Repeat to provide multiple integers."
     ),
-    n: int = typer.Option(
+    patient_id: Optional[List[int]] = typer.Option(
+        None, "--patient-id", "-p",
+        help="Explicit patient ID(s). Repeat to provide multiple integers."
+    ),
+    n: Optional[int] = typer.Option(
         None, "--n", "-n", help="Number of recommendations per patient."
     ),
-    days: int = typer.Option(
-        None, "--days", "-d", help="Number of days to cover in the recommendation"
-    ),    
-    protocols_per_day: int = typer.Option(
-        None, "--protocols-per-day", "-p", help="Number of protocols per day."
+    days: Optional[int] = typer.Option(
+        None, "--days", "-d", help="Number of days to cover in the recommendation."
     ),
-    env_file: Path = typer.Option(
+    protocols_per_day: Optional[int] = typer.Option(
+        None, "--protocols-per-day", "-P",
+        help="Number of protocols per day."
+    ),
+    env_file: Optional[Path] = typer.Option(
         None, "--env-file", "-e", help="Path to a .env file with environment variables."
     ),
 ):
     """
-    Generate treatment recommendations for a given patient.
+    Generate treatment recommendations for a study OR explicit patient list.
+    Use --study-id for a cohort run, or --patient-id for targeted patients.
     """
-    
     try:
         settings = get_settings(env_file)
         cdss = build_cdss(settings)
-        return cdss.recommend_for_study(
-            study_id=study_id,
-            n=n or settings.N,
-            days=days or settings.DAYS,
-            protocols_per_day=protocols_per_day or settings.PROTOCOLS_PER_DAY,
-        )
-    except Exception as e:
-        logger.error(f"Error generating recommendations: {e}")
-        typer.echo(f"Error generating recommendations: {e}")    
 
+        # Validate exclusivity
+        has_study = bool(study_id)
+        has_patients = bool(patient_id)
+        if has_study and has_patients:
+            raise typer.BadParameter("Use either --study-id or --patient-id, not both.")
+        if not has_study and not has_patients:
+            raise typer.BadParameter("You must provide either --study-id or --patient-id.")
+
+        # Resolve defaults from settings
+        n_val = n or settings.N
+        days_val = days or settings.DAYS
+        ppd_val = protocols_per_day or settings.PROTOCOLS_PER_DAY
+
+        if has_study:
+            result = cdss.recommend_for_study(
+                study_id=study_id,
+                n=n_val,
+                days=days_val,
+                protocols_per_day=ppd_val,
+            )
+        else:
+            # Supports one or many patients (e.g., [123] or [123, 456])
+            result = cdss.recommend_for_patients(
+                patient_ids=patient_id,
+                n=n_val,
+                days=days_val,
+                protocols_per_day=ppd_val,
+            )
+        
+        logger.info("Recommendation result: %s",
+                    json.dumps(result, indent=2, default=str))
+        typer.echo(json.dumps(result, indent=2, default=str))
+
+    except typer.BadParameter as e:
+        # Input/usage error -> friendly message
+        logger.error(f"Argument error: {e}")
+        typer.echo(f"Argument error: {e}")
+        raise typer.Exit(code=2)
+
+    except Exception as e:
+        logger.exception("Error generating recommendations")
+        typer.echo(f"Error generating recommendations: {e}")
+        raise typer.Exit(code=1)
 
 @cli.command("compute-metrics")
 def compute_metrics(
@@ -117,7 +157,7 @@ def compute_protocol_metrics(
     try:
         settings = get_settings(env_file)
         cdss = build_cdss(settings)
-        result = cdss.compute_protocol_metrics()
+        result = cdss.compute_protocol_similarity()
         typer.echo(result)
     except Exception as e:
         logger.error(f"Error computing protocol metrics: {e}")
