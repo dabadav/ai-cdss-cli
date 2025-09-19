@@ -55,22 +55,45 @@ The system is expected to be used in three scenarios: i) when recommending weekl
 
 #### **i) Weekly Recommendations - **recommend** command**
 
-Example for running recommendations in production environment for patients that are in study 2:
+Example for running recommendations in production environment for patients that are in study 42, or patients with id 7 and id 8:
 
 ```
-$ ai-cdss-cli recommend --study_id 2 --env-file .ai_cdss/env/.env.prod
+# All patients in study 42  (study-level run, applies weekly filters)
+$ ai-cdss-cli recommend -s 42
+
+# Specific patients 7 and 8  (direct run, skips weekly filters)
+$ ai-cdss-cli recommend -p 7 -p 8
 ```
 
-This command will select the patients in the given study who 
-- are marked for recommendation,
-    - `RECOMMEND = 1`
-- are still active in the study, 
-    - `start_date <= today <= end_date`
-- and have hit a weekly milestone (7, 14, 21 days, etc.) since their start date (past week prescrptions have expired and they need new ones).
-    - `DATEDIFF(CURDATE(), START_DATE) % 7 = 0`
+---
 
-> [!IMPORTANT]
-> Run this command daily (for example, via a cron job) so that weekly recommendations are processed each day for all eligible patients.
+Here’s an updated **README snippet** that reflects the new behaviour and clarifies when the weekly-milestone filters apply.
+
+---
+
+#### **i) Weekly Recommendations – `recommend` command**
+
+You can generate recommendations either **for an entire study cohort** or **for specific patients**.
+
+```
+# All patients in study 42  (study-level run, applies weekly filters)
+$ ai-cdss-cli recommend -s 42
+
+# Specific patients 7 and 8  (direct run, skips weekly filters)
+$ ai-cdss-cli recommend -p 7 -p 8
+```
+
+**How patient selection works:**
+
+| Mode                    | Command               | Filters applied                                                                                                                                            | Typical use                                                                                                             |
+| ----------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Study mode**          | `--study-id` / `-s`   | **Weekly-milestone filters are enforced:**<br>• `RECOMMEND = 1`<br>• `start_date <= today <= end_date`<br>• `DATEDIFF(CURDATE(), start_date) % 7 = 0`    | Daily/cron job to issue new weekly prescriptions for all eligible patients in the study.                                |
+| **Direct patient mode** | `--patient-id` / `-p` | *No automatic filters*. Recommendations are generated immediately for the specified patient(s), regardless of weekly milestones or recommendation flags. | Ad-hoc run when a new patient is added or an urgent re-recommendation is needed, without reprocessing the entire study. |
+
+> \[!IMPORTANT]
+> **Run the study-level command daily** (for example, via a cron job) so that weekly recommendations are processed each day for all eligible patients.
+> Use the **patient-level command only for exceptions**, e.g. when a patient is registered after the daily cron job has executed and you need immediate recommendations without duplicating prescriptions for the whole study.
+
 
 <details>
 
@@ -78,19 +101,21 @@ This command will select the patients in the given study who
 
 ```bash
 $ ai-cdss-cli recommend --help
-                                                                                                                                                                      
- Usage: ai-cdss-cli recommend [OPTIONS]                                                                                                                               
-                                                                                                                                                                      
- Generate treatment recommendations for a given patient.                                                                                                              
-                                                                                                                                                                  
-╭─ Options ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ *  --study-id           -s      INTEGER  Repeat this option to provide multiple integers. [default: None] [required]                                               │
-│    --n                  -n      INTEGER  Number of recommendations per patient. [default: None]                                                                    │
-│    --days               -d      INTEGER  Number of days to cover in the recommendation [default: None]                                                             │
-│    --protocols-per-day  -p      INTEGER  Number of protocols per day. [default: None]                                                                              │
-│    --env-file           -e      PATH     Path to a .env file with environment variables. [default: None]                                                           │
-│    --help                                Show this message and exit.                                                                                               │
-╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                                                                                                                                                                                                                                                                        
+ Usage: ai-cdss-cli recommend [OPTIONS]                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                        
+ Generate treatment recommendations for a study OR explicit patient list. Use --study-id for a cohort run, or --patient-id for targeted patients.                                                                                                                       
+                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                        
+╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --study-id           -s      INTEGER  Study cohort ID(s). Repeat to provide multiple integers. [default: None]                                                                                                                                                       │
+│ --patient-id         -p      INTEGER  Explicit patient ID(s). Repeat to provide multiple integers. [default: None]                                                                                                                                                   │
+│ --n                  -n      INTEGER  Number of recommendations per patient. [default: None]                                                                                                                                                                         │
+│ --days               -d      INTEGER  Number of days to cover in the recommendation. [default: None]                                                                                                                                                                 │
+│ --protocols-per-day  -P      INTEGER  Number of protocols per day. [default: None]                                                                                                                                                                                   │
+│ --env-file           -e      PATH     Path to a .env file with environment variables. [default: None]                                                                                                                                                                │
+│ --help                                Show this message and exit.                                                                                                                                                                                                    │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 </details>
 
