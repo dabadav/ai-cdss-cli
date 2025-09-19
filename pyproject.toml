@@ -9,8 +9,8 @@ license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.12,<4.0"
 dependencies = [
-    "rgs_interface @ git+https://github.com/dabadav/rgs-interface.git@0.4.1",
-    "ai_cdss @ git+https://github.com/dabadav/ai-cdss.git@0.2.2",
+    "rgs_interface @ git+https://github.com/dabadav/rgs-interface.git@v0.4.1",
+    "ai_cdss @ git+https://github.com/dabadav/ai-cdss.git@v0.2.2",
     "typer (>=0.16.0,<0.17.0)",
 ]
 
