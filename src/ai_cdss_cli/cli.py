@@ -65,8 +65,9 @@ def recommend(
         None, "--protocols-per-day", "-P",
         help="Number of protocols per day."
     ),
-    env_file: Optional[Path] = typer.Option(
-        None, "--env-file", "-e", help="Path to a .env file with environment variables."
+    env_file: Path = typer.Option(
+        ..., "--env-file", "-e",
+        help="Path to a .env file with environment variables.",
     ),
 ):
     """
