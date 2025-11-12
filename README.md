@@ -53,24 +53,6 @@ DB_NAME=
 
 The system is expected to be used in three scenarios: i) when recommending weekly schedule for patients, ii) when new patient registered in a study, and iii) when new protocol is added to RGS.
 
-#### **i) Weekly Recommendations - **recommend** command**
-
-Example for running recommendations in production environment for patients that are in study 42, or patients with id 7 and id 8:
-
-```
-# All patients in study 42  (study-level run, applies weekly filters)
-$ ai-cdss-cli recommend -s 42
-
-# Specific patients 7 and 8  (direct run, skips weekly filters)
-$ ai-cdss-cli recommend -p 7 -p 8
-```
-
----
-
-Here’s an updated **README snippet** that reflects the new behaviour and clarifies when the weekly-milestone filters apply.
-
----
-
 #### **i) Weekly Recommendations – `recommend` command**
 
 You can generate recommendations either **for an entire study cohort** or **for specific patients**.
