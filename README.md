@@ -8,13 +8,13 @@ Install directly from GitHub:
 - Lastest release:
 
 ```bash
-pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.1.5"
+pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.1.6"
 ```
 
 - Use a python version of >= 3.12 to install the package
 
 ```bash
-python -m pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.1.5"
+python -m pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.1.6"
 ```
 
 ### CLI Entrypoint
@@ -108,13 +108,14 @@ $ ai-cdss-cli recommend --help
                                                                                                                                                                                                                                                                         
                                                                                                                                                                                                                                                                         
 ╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --study-id           -s      INTEGER  Study cohort ID(s). Repeat to provide multiple integers. [default: None]                                                                                                                                                       │
-│ --patient-id         -p      INTEGER  Explicit patient ID(s). Repeat to provide multiple integers. [default: None]                                                                                                                                                   │
-│ --n                  -n      INTEGER  Number of recommendations per patient. [default: None]                                                                                                                                                                         │
-│ --days               -d      INTEGER  Number of days to cover in the recommendation. [default: None]                                                                                                                                                                 │
-│ --protocols-per-day  -P      INTEGER  Number of protocols per day. [default: None]                                                                                                                                                                                   │
-│ --env-file           -e      PATH     Path to a .env file with environment variables. [default: None]                                                                                                                                                                │
-│ --help                                Show this message and exit.                                                                                                                                                                                                    │
+│    --study-id           -s      INTEGER  Study cohort ID(s). Repeat to provide multiple integers. [default: None]                                                                                                                                                    │
+│    --patient-id         -p      INTEGER  Explicit patient ID(s). Repeat to provide multiple integers. [default: None]                                                                                                                                                │
+│    --n                  -n      INTEGER  Number of recommendations per patient. [default: None]                                                                                                                                                                      │
+│    --days               -d      INTEGER  Number of days to cover in the recommendation. [default: None]                                                                                                                                                              │
+│    --protocols-per-day  -P      INTEGER  Number of protocols per day. [default: None]                                                                                                                                                                                │
+│ *  --env-file           -e      PATH     Path to a .env file with environment variables. [default: None] [required]                                                                                                                                                  │
+│    --debug                               Enable debug mode (no DB writes, return intermediates).                                                                                                                                                                     │
+│    --help                                Show this message and exit.                                                                                                                                                                                                 │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 </details>
