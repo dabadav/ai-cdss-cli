@@ -39,11 +39,11 @@ def get_settings(env_file: Optional[Path] = None) -> Settings:
         return Settings(_env_file=str(env_file))
     return Settings()
 
-def build_cdss(settings: Settings) -> CDSSInterface:
+def build_cdss(settings: Settings, *, debug: Optional[bool] = False) -> CDSSInterface:
     # Centralized construction for loader/processor/env-bound stuff
     loader = DataLoader(rgs_mode="plus")
     processor = DataProcessor(weights=settings.WEIGHTS, alpha=settings.ALPHA)
-    return CDSSInterface(loader=loader, processor=processor)
+    return CDSSInterface(loader=loader, processor=processor, debug=debug)
 
 @cli.command()
 def recommend(
@@ -69,6 +69,9 @@ def recommend(
         ..., "--env-file", "-e",
         help="Path to a .env file with environment variables.",
     ),
+    debug: Optional[bool] = typer.Option(
+        False, "--debug", help="Enable debug mode (no DB writes, return intermediates).", is_flag=True
+    ),
 ):
     """
     Generate treatment recommendations for a study OR explicit patient list.
@@ -76,7 +79,7 @@ def recommend(
     """
     try:
         settings = get_settings(env_file)
-        cdss = build_cdss(settings)
+        cdss = build_cdss(settings, debug=debug)
 
         # Validate exclusivity
         has_study = bool(study_id)
@@ -107,8 +110,6 @@ def recommend(
                 protocols_per_day=ppd_val,
             )
         
-        logger.info("Recommendation result: %s",
-                    json.dumps(result, indent=2, default=str))
         typer.echo(json.dumps(result, indent=2, default=str))
 
     except typer.BadParameter as e:
@@ -143,7 +144,6 @@ def compute_metrics(
     except Exception as e:
         logger.error(f"Error computing metrics: {e}")
         typer.echo(f"Error computing metrics: {e}")
-
 
 @cli.command("compute-protocol-metrics")
 def compute_protocol_metrics(

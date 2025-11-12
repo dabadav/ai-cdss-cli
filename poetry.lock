@@ -2,7 +2,7 @@
 
 [[package]]
 name = "ai-cdss"
-version = "0.2.1"
+version = "0.2.5"
 description = "The EOD Clinical Decision Support System uses RGS data, and patient clinical scores (ARAT, MoCA) to provide data-driven recommendation to clinicians of the best RGS activities a patient should perform."
 optional = false
 python-versions = ">=3.12,<4.0"
@@ -21,8 +21,8 @@ scipy = ">=1.15.3,<2.0.0"
 [package.source]
 type = "git"
 url = "https://github.com/dabadav/ai-cdss.git"
-reference = "v0.2.1"
-resolved_reference = "3ffa1ea782f2b1eaa5bc8967b0adccab1776ba57"
+reference = "v0.2.5"
+resolved_reference = "d288296c976591b729a83341c831a71b4d198b32"
 
 [[package]]
 name = "annotated-types"
@@ -1660,4 +1660,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "a9c202234a6088412142f86fb121467553840fcf2e8a7e90b9c360cb9878801c"
+content-hash = "e83e7655952de885ab05203e90f129087f3983bed273ad99c0b52b9b69dd5a38"
