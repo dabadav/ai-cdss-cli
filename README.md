@@ -8,13 +8,13 @@ Install directly from GitHub:
 - Lastest release:
 
 ```bash
-pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.1.8"
+pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.1.9"
 ```
 
 - Use a python version of >= 3.12 to install the package
 
 ```bash
-python -m pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.1.8"
+python -m pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.1.9"
 ```
 
 ### CLI Entrypoint
