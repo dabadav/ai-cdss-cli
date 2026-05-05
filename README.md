@@ -5,16 +5,16 @@
 
 Install directly from GitHub:
 
-- Lastest release:
+- Latest release:
 
 ```bash
-pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.1.10"
+pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.2.0"
 ```
 
 - Use a python version of >= 3.12 to install the package
 
 ```bash
-python -m pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.1.10"
+python -m pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.2.0"
 ```
 
 ### CLI Entrypoint
@@ -76,6 +76,11 @@ $ ai-cdss-cli recommend -p 7 -p 8
 > **Run the study-level command daily** (for example, via a cron job) so that weekly recommendations are processed each day for all eligible patients.
 > Use the **patient-level command only for exceptions**, e.g. when a patient is registered after the daily cron job has executed and you need immediate recommendations without duplicating prescriptions for the whole study.
 
+> \[!NOTE]
+> **Duplication guard (since v0.2.0):** if a patient already has any
+> `prescription_staging` rows for the current week, the run skips that
+> patient. Pass `--force` to rerun anyway (e.g. for explicit replays).
+
 
 <details>
 
@@ -97,6 +102,7 @@ $ ai-cdss-cli recommend --help
 │    --protocols-per-day  -P      INTEGER  Number of protocols per day. [default: None]                                                                                                                                                                                │
 │ *  --env-file           -e      PATH     Path to a .env file with environment variables. [default: None] [required]                                                                                                                                                  │
 │    --debug                               Enable debug mode (no DB writes, return intermediates).                                                                                                                                                                     │
+│    --force                               Bypass duplication guard; rerun even if patient already has prescription_staging rows for this week. Default skips such patients.                                                                                          │
 │    --help                                Show this message and exit.                                                                                                                                                                                                 │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
