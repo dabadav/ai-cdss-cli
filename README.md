@@ -8,13 +8,13 @@ Install directly from GitHub:
 - Latest release:
 
 ```bash
-pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.2.0"
+pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.2.1"
 ```
 
 - Use a python version of >= 3.12 to install the package
 
 ```bash
-python -m pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.2.0"
+python -m pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.2.1"
 ```
 
 ### CLI Entrypoint
@@ -77,7 +77,7 @@ $ ai-cdss-cli recommend -p 7 -p 8
 > Use the **patient-level command only for exceptions**, e.g. when a patient is registered after the daily cron job has executed and you need immediate recommendations without duplicating prescriptions for the whole study.
 
 > \[!NOTE]
-> **Duplication guard (since v0.2.0):** if a patient already has any
+> **Duplication guard (since v0.2.1):** if a patient already has any
 > `prescription_staging` rows for the current week, the run skips that
 > patient. Pass `--force` to rerun anyway (e.g. for explicit replays).
 

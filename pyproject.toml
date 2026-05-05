@@ -1,6 +1,6 @@
 [project]
 name = "ai-cdss-cli"
-version = "0.2.0"
+version = "0.2.1"
 description = "CLI Tool to run AI-CDSS"
 authors = [
     {name = "Eodyne Systems S.L."}
@@ -12,6 +12,8 @@ dependencies = [
     "rgs_interface @ git+https://github.com/dabadav/rgs-interface.git@v0.4.1",
     "ai_cdss @ git+https://github.com/dabadav/ai-cdss.git@v0.3.0",
     "typer (>=0.16.0,<0.17.0)",
+    "pydantic-settings (>=2.5.0,<3.0.0)",
+    "python-dotenv (>=1.0.0,<2.0.0)",
 ]
 
 [tool.poetry.scripts]
