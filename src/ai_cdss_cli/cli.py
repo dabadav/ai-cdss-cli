@@ -72,6 +72,15 @@ def recommend(
     debug: Optional[bool] = typer.Option(
         False, "--debug", help="Enable debug mode (no DB writes, return intermediates).", is_flag=True
     ),
+    force: Optional[bool] = typer.Option(
+        False, "--force",
+        help=(
+            "Bypass the duplication guard and rerun even when the patient "
+            "already has prescription_staging rows for the current week. "
+            "Default behaviour is to skip such patients."
+        ),
+        is_flag=True,
+    ),
 ):
     """
     Generate treatment recommendations for a study OR explicit patient list.
@@ -100,6 +109,7 @@ def recommend(
                 n=n_val,
                 days=days_val,
                 protocols_per_day=ppd_val,
+                force=force,
             )
         else:
             # Supports one or many patients (e.g., [123] or [123, 456])
@@ -108,6 +118,7 @@ def recommend(
                 n=n_val,
                 days=days_val,
                 protocols_per_day=ppd_val,
+                force=force,
             )
         
         typer.echo(json.dumps(result, indent=2, default=str))
