@@ -8,14 +8,23 @@ Install directly from GitHub:
 - Latest release:
 
 ```bash
-pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.2.2"
+pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.2.3"
 ```
 
 - Use a python version of >= 3.12 to install the package
 
 ```bash
-python -m pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.2.2"
+python -m pip install "git+https://github.com/dabadav/ai-cdss-cli.git@v0.2.3"
 ```
+
+### Version
+
+```bash
+$ ai-cdss-cli --version
+ai-cdss-cli 0.2.3 (ai-cdss 0.3.1, rgs-interface 0.4.1)
+```
+
+`-V` and `-v` are aliases for `--version`.
 
 ### CLI Entrypoint
 
@@ -29,7 +38,8 @@ $ ai-cdss-cli --help
  CLI for the AI-CDSS Client.                                                                                                                                          
                                                                                                                                                             
 ╭─ Options ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --help                        Show this message and exit.                                                                                                          │
+│ --version  -V  -v   Show version and exit.                                                                                                                         │
+│ --help              Show this message and exit.                                                                                                                    │
 ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ╭─ Commands ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │ recommend                  Generate treatment recommendations for a given patient.                                                                                 │

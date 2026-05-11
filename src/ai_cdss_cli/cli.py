@@ -1,6 +1,7 @@
 # ai_cdss_cli/cli.py
 import os
 import logging
+from importlib.metadata import PackageNotFoundError, version as _pkg_version
 from pathlib import Path
 from typing import List, Optional
 from dotenv import load_dotenv
@@ -12,6 +13,36 @@ from ai_cdss.interface import CDSSInterface
 logger = logging.getLogger(__name__)
 
 cli = typer.Typer(help="CLI for the AI-CDSS Client.")
+
+
+def _safe_version(pkg: str) -> str:
+    try:
+        return _pkg_version(pkg)
+    except PackageNotFoundError:
+        return "unknown"
+
+
+def _version_callback(value: bool) -> None:
+    if not value:
+        return
+    typer.echo(
+        f"ai-cdss-cli {_safe_version('ai-cdss-cli')} "
+        f"(ai-cdss {_safe_version('ai-cdss')}, "
+        f"rgs-interface {_safe_version('rgs-interface')})"
+    )
+    raise typer.Exit()
+
+
+@cli.callback()
+def main(
+    version: bool = typer.Option(
+        False, "--version", "-V", "-v",
+        help="Show version and exit.",
+        callback=_version_callback,
+        is_eager=True,
+    ),
+) -> None:
+    """AI-CDSS CLI."""
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List
